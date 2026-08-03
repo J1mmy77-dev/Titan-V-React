@@ -3,11 +3,11 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import engine, Base
 
-# 1. Importamos todos los routers (Asegúrate de incluir el de auth)
+# 1. Importamos todos los routers
 from app.routers.proyectos import router as proyectos_router 
 from app.routers.materiales import router as materiales_router
 from app.routers.usuarios import router as usuarios_router
-from app.routers.auth_router import router as auth_router  # <-- ¡Faltaba esta línea!
+from app.routers.auth_router import router as auth_router
 
 # Crear tablas automáticamente
 Base.metadata.create_all(bind=engine)
@@ -27,7 +27,7 @@ app.add_middleware(
 app.include_router(proyectos_router)
 app.include_router(materiales_router)
 app.include_router(usuarios_router)
-app.include_router(auth_router)  
+app.include_router(auth_router)
 
 # Ruta raíz para verificar estado
 @app.get("/")
