@@ -1,0 +1,65 @@
+===========================================================================
+               TITAN V - GUÍA DE DESPLIEGUE EN UN NUEVO EQUIPO
+                          (VERSIÓN ACTUALIZADA)
+===========================================================================
+
+Esta guía contiene los pasos técnicos para configurar y ejecutar el proyecto 
+Titan V utilizando la estructura modular (FastAPI + SQLAlchemy + PostgreSQL) 
+en un entorno WSL (Ubuntu).
+
+---------------------------------------------------------------------------
+PRERREQUISITOS
+---------------------------------------------------------------------------
+1. WSL con distribución de Ubuntu.
+2. Python 3.10 o superior.
+3. Servidor de PostgreSQL instalado y activo.
+
+---------------------------------------------------------------------------
+PASO 1: CONFIGURAR LA BASE DE DATOS
+---------------------------------------------------------------------------
+1. Abre tu terminal de base de datos y ejecuta: 
+   CREATE DATABASE titanv_db;
+
+---------------------------------------------------------------------------
+PASO 2: CLONAR EL REPOSITORIO
+---------------------------------------------------------------------------
+1. Ubícate en tu carpeta de trabajo: 
+   cd /mnt/c/Users/TU_USUARIO/Desktop/
+2. Clona el proyecto: 
+   git clone https://github.com/davidjkl25/titanV.git
+3. Entra a la carpeta general: 
+   cd titanV
+
+---------------------------------------------------------------------------
+PASO 3: CONFIGURACIÓN Y EJECUCIÓN DEL BACKEND (MODULAR)
+---------------------------------------------------------------------------
+1. Accede a la carpeta de backend: 
+   cd backend
+2. Crea y activa tu entorno virtual:
+   python3 -m venv venv
+   source venv/bin/activate
+3. Instala las dependencias: 
+   pip install fastapi uvicorn sqlalchemy psycopg2-binary pydantic
+4. Inicia el servidor:
+   uvicorn app.main:app --reload
+
+* NOTA: SQLAlchemy inyectará automáticamente las tablas desde 'models.py'.
+
+---------------------------------------------------------------------------
+PASO 4: EJECUCIÓN DEL FRONTEND
+---------------------------------------------------------------------------
+1. Desde el explorador de Windows, navega a 'frontend/'.
+2. Abre 'proyecto.html' para la Landing Page.
+3. Haz clic en "Empezar ahora" para acceder al 'dashboard.html'.
+
+---------------------------------------------------------------------------
+💡 TRABAJO EN EQUIPO (CONVENTIONAL COMMITS)
+---------------------------------------------------------------------------
+- Nuevas funciones: git commit -m "feat(modulo): descripción"
+- Correcciones: git commit -m "fix(modulo): descripción"
+- Documentación: git commit -m "docs(readme): descripción"
+
+Comandos diarios:
+- git pull origin main (Actualizar antes de empezar)
+- git push origin main (Subir cambios al finalizar)
+===========================================================================
