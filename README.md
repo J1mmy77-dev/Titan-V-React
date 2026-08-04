@@ -1,98 +1,164 @@
-# Titan V - Sistema de Gestión de Obra
+# 🏗️ Titan V — Sistema de Gestión de Obra
 
-Titan V es un sistema integral de gestión y control de proyectos de infraestructura, diseñado para centralizar la información operativa, logística y técnica en tiempo real. Este backend actúa como el núcleo de la API que alimenta los procesos de campo y la administración central.
+Titan V es un sistema integral de gestión y control de proyectos de infraestructura,
+diseñado para centralizar la información operativa, logística y técnica de una
+constructora en tiempo real: proyectos, materiales, personal y evidencias de campo.
 
-Este sistema está diseñado para apoyar a pequeñas y medianas empresas de construcción en la gestión de la información y en el seguimiento organizado y flexible de sus obras. TITAN V centraliza el registro constante de actualizaciones, permitiendo adjuntar contenido multimedia (imágenes) y habilitando secciones de comentarios. Es una herramienta clave para optimizar los procesos logísticos y de comunicación, ofreciendo una solución eficiente y sin costos adicionales para mantener informadas a las partes interesadas.
+Está pensado para pequeñas y medianas empresas de construcción, permitiendo llevar
+el registro de sus obras, adjuntar evidencia multimedia y mantener informado al
+cliente contratante sobre el avance de su proyecto, sin costos de licenciamiento.
 
+## 👥 Usuarios del sistema
 
-## 🚀 Características Principales
-* **Gestión de Proyectos:** Seguimiento del ciclo de vida de obras de infraestructura.
-* **Control de Inventarios:** Registro inmutable de entradas y salidas de materiales.
-* **Gestión de Personal:** Asignación de tareas y control de certificaciones.
-* **Documentación en Campo:** Registro de actas digitales y evidencias.
+1. **Administrador / Constructora**: personal interno (ingenieros, directores de obra,
+   supervisores). Crea los proyectos, gestiona inventario y sube avances.
+2. **Cliente / Contratante**: usuario externo que consulta el estado de su obra.
 
-##  Usuarios Principales
+## 🚀 Funcionalidades
 
-1. **Usuario Administrador / Constructor (La Constructora)**: Es el personal de la empresa constructora (ingenieros, directores de obra, contratistas). Ellos crean los proyectos y suben las fotos y actualizaciones.
-2.  **Usuario Final / Contratante (El cliente de la constructora):** Es la persona externa que contrató a la constructora. Entra a la app solo para ver cómo va su obra.
+- [x] Gestión de proyectos de obra (CRUD completo)
+- [x] Gestión de materiales (CRUD completo)
+- [x] Gestión de usuarios (CRUD completo)
+- [x] Gestión de tareas y comentarios anidados (CRUD completo)
+- [x] Gestión de turnos y asistencia (CRUD completo)
+- [x] Gestión de subcontratistas (CRUD completo)
+- [x] Kardex de inventario: entradas/salidas con validación de stock disponible
+- [x] Inicio de sesión (`/auth/login`)
+- [ ] Registro público con hash de contraseña real en el frontend (hoy el login del
+      frontend solo simula la sesión con `localStorage`, sin llamar al backend)
+- [ ] Evidencias multimedia y actas de campo (los modelos y esquemas ya existen,
+      falta el router; requiere manejo de subida de archivos)
+- [ ] Autenticación con JWT real (hoy el login devuelve un token fijo de ejemplo)
 
-## Funcionalidades principales
+## 🛠️ Stack tecnológico
 
--[ ] Registro e inicio de sesión seguro.
+- **Backend:** Python + FastAPI
+- **Base de datos:** PostgreSQL
+- **ORM:** SQLAlchemy
+- **Validación:** Pydantic
+- **Frontend:** HTML5, CSS3, JavaScript (Vanilla, sin frameworks)
 
--[ ] Creación y gestión de proyectos.
+## 📂 Estructura del proyecto
 
--[ ] Soporte para contenido multimedia (imágenes).
+Organizada en capas, según el diagrama de componentes del proyecto:
 
--[ ] Sistema de actualizaciones periódicas.
-
--[ ] Módulo de seguimiento y control del estado del proyecto.
-
-## 🛠️ Stack Tecnológico
-* **Backend:** FastAPI (Python)
-* **Base de Datos:** PostgreSQL
-* **ORM:** SQLAlchemy
-* **Validación:** Pydantic
-* **Entorno:** WSL (Windows Subsystem for Linux)
-
-## Metodología de Desarrollo 
-**Metodología elegida**: Scrum.
-
-**¿Por qué?**: Se seleccionó Scrum porque proporciona una mayor flexibilidad, asegura la calidad del producto final y aumenta la productividad del equipo. Sus ciclos iterativos e incrementales (Sprints) son los que mejor se ajustan a la naturaleza cambiante de la construcción y a los requerimientos del proyecto, permitiendo además una distribución equitativa de tareas dentro del equipo de desarrollo.
-
-## Arquitectura de Software (Metodología en Capas)
-
-Para garantizar el orden, la escalabilidad y permitir que el equipo trabaje en paralelo, el proyecto se estructura bajo una Arquitectura en Capas:
-
-**I. Capa de Presentación (Frontend)**
-Es la interfaz gráfica con la que interactúan los usuarios. Recibe las acciones del usuario y muestra las respuestas del sistema de forma dinámica.
-
-**HTML5**: Define la estructura semántica de los formularios, paneles de control y vistas del proyecto.
-
-**CSS**: Modela el diseño visual, la disposición de los elementos y asegura la adaptabilidad en dispositivos móviles (Responsive Design).
-
-**JavaScript (Manejo del DOM y API)**: Aporta la interactividad necesaria. Se encarga de capturar los eventos del usuario (como clics o envíos de formularios), manipular el DOM para actualizar la pantalla en tiempo real (por ejemplo, insertar un nuevo comentario en la lista sin recargar la página) y realizar la validación de campos en el cliente.
-
-**II. Capa de Rutas y Entrada (API Routing)**
-Tecnología: Node.js (Express).
-
-**Función**: Actúa como la puerta de entrada al servidor. Recibe las peticiones HTTP asíncronas enviadas por el JavaScript del frontend (endpoints como /api/proyectos) y las redirige al controlador correspondiente.
-
-**III. Capa de Lógica de Negocio (Controladores)**
-**Tecnología**: Node.js.
-
-**Función**: Es el cerebro del backend. Aplica las reglas del sistema: valida la autenticidad de las sesiones, procesa las imágenes subidas por los constructores y verifica que los usuarios tengan los permisos requeridos antes de autorizar cualquier cambio.
-
-**IV. Capa de Acceso a Datos (Modelos)**
-Tecnología: Node.js (SQL / ORM).
-
-**Función**: Traduce las órdenes de la lógica de negocio en consultas de base de datos. Es la única capa autorizada para comunicarse directamente con el sistema de almacenamiento.
-
-**V. Capa de Almacenamiento (Base de Datos)**
-**Tecnología**: PostgreSQL.
-
-**Función**: Repositorio relacional encargado de almacenar de forma permanente y segura toda la información de los proyectos, usuarios, imágenes y comentarios.
-
-## Flujo de Interacción: El rol de JavaScript y el DOM
-Para entender cómo cooperan las capas con la inclusión de JavaScript, este es el flujo que sigue una acción común dentro de la app (como publicar un comentario):
-
--El usuario escribe un comentario en la interfaz (HTML/CSS).
-
--JavaScript intercepta el evento de envío, valida que el texto no esté vacío y realiza una petición asíncrona (fetch) al servidor backend (Node.js).
-
--El servidor procesa la petición y ordena guardar el comentario en la base de datos (PostgreSQL).
-
--Al recibir la confirmación de éxito del servidor, JavaScript modifica el DOM de la página web de manera inmediata, dibujando el nuevo comentario en la pantalla del usuario de forma fluida y sin refrescar el navegador.
-
-
-## 📂 Estructura del Proyecto
 ```text
-titanv-backend/
-├── app/
-│   ├── routers/        # Endpoints modulares
-│   ├── database.py     # Conexión a la base de datos
-│   ├── models.py       # Modelos (SQLAlchemy)
-│   ├── schemas.py      # Esquemas de validación (Pydantic)
-│   └── main.py         # Punto de entrada de la API
-├── venv/               # Entorno virtual
-└── .gitignore          # Archivos excluidos de control de versiones
+titanV/
+├── Frontend/                  # Cliente web (HTML / CSS / JS)
+│   ├── login.html / login.js
+│   ├── Dashboard.html / dashboard.js
+│   └── Proyecto.html / Proyecto.js
+│
+└── backend/
+    ├── requirements.txt
+    ├── .env.example            # Variables de entorno de ejemplo
+    └── app/
+        ├── main.py             # Punto de entrada de la API + CORS + registro de routers
+        │
+        ├── core/
+        │   └── database.py     # Conexión a PostgreSQL, sesión y Base declarativa
+        │
+        ├── routers/            # Capa de entrada HTTP (validación, status codes)
+        │   ├── auth_router.py
+        │   ├── usuario_router.py
+        │   ├── proyecto_router.py
+        │   ├── material_router.py
+        │   ├── tarea_router.py         # incluye /tareas/{id}/comentarios
+        │   ├── turno_router.py
+        │   ├── subcontratista_router.py
+        │   └── movimiento_router.py    # kardex + stock por proyecto
+        │
+        ├── services/           # Lógica de negocio (independiente de FastAPI)
+        │   ├── auth_service.py
+        │   ├── usuario_service.py
+        │   ├── proyecto_service.py
+        │   ├── material_service.py
+        │   ├── tarea_service.py        # tareas + comentarios
+        │   ├── asistencia_service.py
+        │   ├── subcontratista_service.py
+        │   └── movimiento_service.py   # valida stock antes de cada salida
+        │
+        ├── schemas/             # Esquemas Pydantic (entrada/salida de la API)
+        │   ├── usuario_schema.py
+        │   ├── proyecto_schema.py
+        │   ├── material_schema.py
+        │   ├── tarea_schema.py
+        │   └── asistencia_schema.py
+        │
+        └── models/               # Modelos SQLAlchemy (tablas)
+            ├── usuario_model.py
+            ├── proyecto_model.py
+            ├── material_model.py
+            ├── tarea_model.py
+            ├── asistencia_model.py
+            └── reporte_model.py
+```
+
+**Flujo de una petición:** `router` recibe la petición HTTP y valida con un `schema`
+→ delega la lógica al `service` correspondiente → el `service` usa los `models` para
+leer/escribir en PostgreSQL a través de `core/database.py`.
+
+## ⚙️ Instalación y ejecución local
+
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate        # En Windows: venv\Scripts\activate
+pip install -r requirements.txt
+
+# Copia el archivo de ejemplo y ajusta tu conexión a Postgres
+cp .env.example .env
+
+uvicorn app.main:app --reload --port 8000
+```
+
+La API queda disponible en `http://localhost:8000`, y la documentación interactiva
+(Swagger) en `http://localhost:8000/docs`.
+
+Para el frontend, abre los archivos de `Frontend/` directamente en el navegador o
+sírvelos con una extensión tipo Live Server.
+
+## 📡 Endpoints principales
+
+| Método | Ruta                  | Descripción                     |
+|--------|-----------------------|----------------------------------|
+| POST   | `/auth/login`          | Inicio de sesión                |
+| GET    | `/proyectos/`           | Listar proyectos                |
+| POST   | `/proyectos/`           | Crear proyecto                  |
+| GET    | `/proyectos/{id}`       | Obtener un proyecto              |
+| PUT    | `/proyectos/{id}`       | Actualizar un proyecto (parcial)|
+| DELETE | `/proyectos/{id}`       | Eliminar un proyecto            |
+| GET    | `/materiales/`          | Listar materiales               |
+| POST   | `/materiales/`          | Crear material                  |
+| GET    | `/materiales/{id}`      | Obtener un material              |
+| PUT    | `/materiales/{id}`      | Actualizar un material (parcial)|
+| DELETE | `/materiales/{id}`      | Eliminar un material             |
+| GET    | `/usuarios/`            | Listar usuarios                 |
+| POST   | `/usuarios/`            | Crear usuario                   |
+| GET    | `/usuarios/{id}`        | Obtener un usuario                |
+| PUT    | `/usuarios/{id}`        | Actualizar un usuario             |
+| DELETE | `/usuarios/{id}`        | Eliminar un usuario               |
+| GET    | `/tareas/?proyecto_id=` | Listar tareas (filtro opcional) |
+| POST   | `/tareas/`              | Crear tarea                     |
+| PUT    | `/tareas/{id}`          | Actualizar tarea (parcial)      |
+| DELETE | `/tareas/{id}`          | Eliminar tarea                  |
+| GET    | `/tareas/{id}/comentarios` | Listar comentarios de una tarea |
+| POST   | `/tareas/{id}/comentarios` | Publicar comentario en una tarea |
+| DELETE | `/tareas/comentarios/{id}` | Eliminar un comentario          |
+| GET    | `/turnos/?proyecto_id=` | Listar turnos (filtro opcional) |
+| POST   | `/turnos/`              | Crear turno                     |
+| PUT    | `/turnos/{id}`          | Actualizar turno (marcar asistencia) |
+| DELETE | `/turnos/{id}`          | Eliminar turno                  |
+| GET    | `/subcontratistas/?proyecto_id=` | Listar subcontratistas |
+| POST   | `/subcontratistas/`     | Registrar subcontratista         |
+| PUT    | `/subcontratistas/{id}` | Actualizar subcontratista        |
+| DELETE | `/subcontratistas/{id}` | Eliminar subcontratista          |
+| POST   | `/movimientos/`         | Registrar entrada/salida de material (valida stock) |
+| GET    | `/movimientos/?proyecto_id=&material_id=` | Historial de movimientos (kardex) |
+| GET    | `/movimientos/inventario/{proyecto_id}` | Stock actual por proyecto |
+
+## 🧭 Metodología de desarrollo
+
+**Scrum.** Sus ciclos iterativos e incrementales (sprints) se ajustan bien a la
+naturaleza cambiante de los requerimientos de construcción y permiten distribuir
+el trabajo entre el equipo de desarrollo de forma equitativa.
