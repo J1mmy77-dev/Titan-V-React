@@ -1,6 +1,4 @@
 import React from 'react';
-
-// Restricción: Obligatorio el uso de interface en TypeScript
 export interface CardAccionProps {
   label: string;
   tipo?: string;
