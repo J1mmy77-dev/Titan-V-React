@@ -5,6 +5,7 @@ import ProyectosTab from './components/ProyectosTab';
 import MaterialesTab from './components/MaterialesTab';
 import Sidebar from './components/Sidebar';
 import Login from './components/Login';
+import Comentarios from "./components/Comentarios";
 import './App.css';
 
 function App() {
