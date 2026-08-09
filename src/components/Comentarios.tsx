@@ -1,8 +1,6 @@
 import CardAccion from './CardAccion';
 
-// Módulo Comentarios
-// - Formulario sin hooks: se lee con FormData al enviar.
-// - Usa CardAccion (Padre -> Hijo por props, Hijo -> Padre por callback).
+
 const Comentarios = () => {
   const manejarEnvioComentario = (evento: React.FormEvent<HTMLFormElement>) => {
     evento.preventDefault();
