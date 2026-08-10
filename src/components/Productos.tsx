@@ -1,10 +1,25 @@
+import { CardAccion } from './CardAccion';
+
 const Productos = () => {
+  const handleAccionProducto = (mensaje: string) => {
+    alert(`Módulo: Productos\n${mensaje}`);
+    console.log(`[Productos] ${mensaje}`);
+  };
+
   return (
     <div style={{ padding: '20px', backgroundColor: '#ffffff', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
       <h2 style={{ color: '#0f172a', marginBottom: '15px' }}>Catálogo de Materiales y Productos</h2>
       <p style={{ color: '#475569', marginBottom: '20px' }}>Inventario general disponible para la gestión de proyectos.</p>
-      
-      <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+
+      <CardAccion
+        titulo="Nuevo Producto"
+        descripcion="Agrega un nuevo material o producto al catálogo general."
+        icono="fa-box-open"
+        textoBoton="Agregar Producto"
+        onAccion={handleAccionProducto}
+      />
+
+      <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', marginTop: '20px' }}>
         <thead>
           <tr style={{ backgroundColor: '#f1f5f9', color: '#1e293b' }}>
             <th style={{ padding: '12px', borderBottom: '1px solid #cbd5e1' }}>Código</th>
