@@ -6,6 +6,7 @@ import MaterialesTab from './components/MaterialesTab';
 import Sidebar from './components/Sidebar';
 import Login from './components/Login';
 import Comentarios from "./components/Comentarios";
+import Registro from './components/Registro';
 import './App.css';
 
 function App() {
