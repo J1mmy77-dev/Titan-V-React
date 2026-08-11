@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import QuienesSomos from '../components/QuienesSomos';
 
 const caracteristicas = [
   {
@@ -28,7 +29,6 @@ const LandingPage = () => {
 
   return (
     <div style={{ backgroundColor: '#0a0a0a', minHeight: '100vh', color: '#fff' }}>
-      {/* Header */}
       <header
         style={{
           display: 'flex',
@@ -57,7 +57,6 @@ const LandingPage = () => {
         </button>
       </header>
 
-      {/* Hero */}
       <section
         style={{
           padding: '90px 8% 70px',
@@ -102,7 +101,6 @@ const LandingPage = () => {
         </button>
       </section>
 
-      {/* Features */}
       <section style={{ backgroundColor: '#f8f9fa', color: '#111', padding: '70px 8%' }}>
         <h2
           style={{
@@ -153,7 +151,8 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Footer */}
+      <QuienesSomos />
+
       <footer style={{ padding: '30px 8%', textAlign: 'center', color: '#777', fontSize: '13px' }}>
         © 2026 Titan V — Todos los derechos reservados
       </footer>

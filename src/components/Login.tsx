@@ -5,8 +5,8 @@ import Registro from './Registro';
 export interface LoginProps {
   correo: string;
   contrasena: string;
-  onCorreoChange: (e: React.ChangeEvent) => void;
-  onContrasenaChange: (e: React.ChangeEvent) => void;
+  onCorreoChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onContrasenaChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onEnviar: (e: React.FormEvent) => void;
 }
 
@@ -18,10 +18,8 @@ export const Login: React.FC<LoginProps> = ({
   onEnviar
 }) => {
 
-  // AGREGADO: controla la aparición del componente hijo Registro
   const [mostrarRegistro, setMostrarRegistro] = useState(false);
 
-  // AGREGADO: función que recibe la información enviada por Registro
   const manejarRegistro = (datos: {
     nombre: string;
     apellido: string;
@@ -41,11 +39,9 @@ export const Login: React.FC<LoginProps> = ({
 
     console.log('Módulo Login - Registro recibido:', datos);
 
-    // Después del registro vuelve al Login
     setMostrarRegistro(false);
   };
 
-  // AGREGADO: muestra el componente hijo
   if (mostrarRegistro) {
     return (
       <Registro
@@ -133,15 +129,7 @@ export const Login: React.FC<LoginProps> = ({
           fontSize: '12px'
         }}>
 
-          <a
-            href="#forgot"
-            style={{
-              color: '#ffcc00',
-              textDecoration: 'none',
-              display: 'block',
-              marginBottom: '8px'
-            }}
-          >
+          <a href="#forgot" style={{ color: '#ffcc00', textDecoration: 'none', display: 'block', marginBottom: '8px' }}>
             ¿Olvidaste tu contraseña?
           </a>
 
@@ -149,8 +137,6 @@ export const Login: React.FC<LoginProps> = ({
             ¿No tienes cuenta?{' '}
           </span>
 
-          {/* ÚNICO CAMBIO EN ESTA PARTE:
-              ahora abre el componente hijo Registro */}
           <button
             type="button"
             onClick={() => setMostrarRegistro(true)}
