@@ -1,8 +1,4 @@
-// Cliente API para el módulo de Tareas y Comentarios.
-// Coincide con backend/app/routers/tarea_router.py
 
-// TODO: mover a variable de entorno (import.meta.env.VITE_API_URL) cuando
-// se defina el despliegue real del backend.
 const API_BASE_URL = 'http://localhost:8000';
 
 export type EstadoTarea = 'Pendiente' | 'En Proceso' | 'Completada';
@@ -40,8 +36,6 @@ async function manejarRespuesta<T>(res: Response): Promise<T> {
   return res.json() as Promise<T>;
 }
 
-// --- Tareas ---
-
 export async function listarTareas(proyectoId?: number): Promise<Tarea[]> {
   const url = new URL(`${API_BASE_URL}/tareas/`);
   if (proyectoId !== undefined) {
@@ -55,8 +49,6 @@ export async function obtenerTarea(tareaId: number): Promise<Tarea> {
   const res = await fetch(`${API_BASE_URL}/tareas/${tareaId}`);
   return manejarRespuesta<Tarea>(res);
 }
-
-// --- Comentarios (siempre anidados bajo una tarea) ---
 
 export async function listarComentarios(tareaId: number): Promise<Comentario[]> {
   const res = await fetch(`${API_BASE_URL}/tareas/${tareaId}/comentarios`);
