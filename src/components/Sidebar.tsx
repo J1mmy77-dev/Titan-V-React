@@ -23,6 +23,12 @@ export const Sidebar = ({ activeTab, onSelectTab, onLogout }: SidebarProps) => {
         >
           Proyectos de Obra
         </a>
+        <a
+          className={activeTab === 'tareas' ? 'active' : ''}
+          onClick={() => onSelectTab('tareas')}
+        >
+          Tareas
+        </a>
         <a 
           className={activeTab === 'materiales' ? 'active' : ''} 
           onClick={() => onSelectTab('materiales')}
