@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Sidebar } from '../components/Sidebar';
 import { InicioTab } from '../components/InicioTab';
 import { ProyectosTab } from '../components/ProyectosTab';
+import { TareasTab } from '../components/TareasTab';
 import { MaterialesTab } from '../components/MaterialesTab';
 import Usuarios from '../components/Usuarios';
 import Productos from '../components/Productos';
@@ -28,6 +29,7 @@ const DashboardPage = ({ onLogout }: DashboardPageProps) => {
       <div className="main-content">
         {tabActual === 'inicio' && <InicioTab onIrA={setTabActual} />}
         {tabActual === 'proyectos' && <ProyectosTab />}
+        {tabActual === 'tareas' && <TareasTab />}
         {tabActual === 'materiales' && <MaterialesTab />}
         {tabActual === 'usuarios' && <Usuarios />}
         {tabActual === 'productos' && <Productos />}
