@@ -20,8 +20,11 @@ def autenticar_usuario(db: Session, credenciales: UsuarioLogin) -> Optional[Usua
         if pwd_context.verify(credenciales.contrasena, usuario.contrasena_encriptada):
             contrasena_valida = True
     except Exception:
-        # Fallback por si la contraseña en BD quedó guardada temporalmente en texto plano
+        # Fallback por si la contraseña en BD quedó guardada de una versión anterior
+        # en texto plano. Si coincide, se aprovecha para migrarla a bcrypt en el acto.
         if usuario.contrasena_encriptada == credenciales.contrasena:
             contrasena_valida = True
+            usuario.contrasena_encriptada = pwd_context.hash(credenciales.contrasena)
+            db.commit()
 
     return usuario if contrasena_valida else None

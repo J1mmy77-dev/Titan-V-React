@@ -32,6 +32,9 @@ class ProyectoObra(Base):
     evidencias = relationship("EvidenciaMultimedia", back_populates="proyecto", cascade="all, delete-orphan")
     actas_campo = relationship("ActaCampo", back_populates="proyecto", cascade="all, delete-orphan")
     subcontratistas = relationship("Subcontratista", back_populates="proyecto", cascade="all, delete-orphan")
+    colaboradores = relationship(
+        "ColaboradorProyecto", back_populates="proyecto", cascade="all, delete-orphan"
+    )
 
 
 class Subcontratista(Base):

@@ -26,6 +26,7 @@ class UsuarioUpdate(BaseModel):
     activo: Optional[bool] = None
     fecha_vencimiento_licencia: Optional[date] = None
     tiene_certificacion_maquinaria: Optional[bool] = None
+    contrasena: Optional[str] = Field(None, min_length=8, max_length=100, example="NuevaClave123*")
 
 
 class UsuarioResponse(UsuarioBase):
@@ -43,3 +44,14 @@ class UsuarioLogin(BaseModel):
 
     correo_electronico: EmailStr
     contrasena: str
+
+
+class TokenResponse(BaseModel):
+    """Respuesta del login: JWT real con expiración."""
+
+    mensaje: str
+    usuario_id: int
+    rol: int
+    access_token: str
+    token_type: str = "bearer"
+    expires_in: int

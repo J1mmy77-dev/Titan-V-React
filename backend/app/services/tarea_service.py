@@ -54,6 +54,10 @@ def listar_comentarios(db: Session, tarea_id: int):
     return db.query(Comentario).filter(Comentario.tarea_id == tarea_id).order_by(Comentario.fecha_comentario).all()
 
 
+def obtener_comentario(db: Session, comentario_id: int) -> Optional[Comentario]:
+    return db.query(Comentario).filter(Comentario.id == comentario_id).first()
+
+
 def crear_comentario(db: Session, tarea_id: int, usuario_id: int, comentario: ComentarioCreate) -> Comentario:
     nuevo_comentario = Comentario(
         contenido=comentario.contenido,

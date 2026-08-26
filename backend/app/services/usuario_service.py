@@ -2,6 +2,7 @@ from typing import Optional
 
 from sqlalchemy.orm import Session
 
+from app.core.security import hash_password
 from app.models import Usuario
 from app.schemas import UsuarioCreate, UsuarioUpdate
 
@@ -37,7 +38,7 @@ def crear_usuario(db: Session, usuario: UsuarioCreate) -> Usuario:
         apellidos=apellidos_db,
         correo_electronico=usuario.correo_electronico,
         rol=usuario.rol.value if hasattr(usuario.rol, "value") else usuario.rol,
-        contrasena_encriptada=usuario.contrasena,  # TAREA FUTURA: aplicar hash (ej. bcrypt) aquí
+        contrasena_encriptada=hash_password(usuario.contrasena),
         fecha_vencimiento_licencia=usuario.fecha_vencimiento_licencia,
         tiene_certificacion_maquinaria=usuario.tiene_certificacion_maquinaria,
     )
@@ -69,6 +70,9 @@ def actualizar_usuario(db: Session, usuario_id: int, datos: UsuarioUpdate) -> Op
 
     if datos.tiene_certificacion_maquinaria is not None:
         usuario.tiene_certificacion_maquinaria = datos.tiene_certificacion_maquinaria
+
+    if datos.contrasena:
+        usuario.contrasena_encriptada = hash_password(datos.contrasena)
 
     db.commit()
     db.refresh(usuario)

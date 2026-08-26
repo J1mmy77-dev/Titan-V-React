@@ -33,3 +33,6 @@ class Usuario(Base):
         "HistorialMovimiento", back_populates="usuario", cascade="all, delete-orphan"
     )
     tareas = relationship("Tarea", back_populates="operario")
+    colaboraciones = relationship(
+        "ColaboradorProyecto", back_populates="usuario", cascade="all, delete-orphan"
+    )

@@ -4,11 +4,18 @@ Reexporta todos los esquemas de Pydantic para mantener compatibilidad con
 """
 
 from app.schemas.usuario_schema import (
+    TokenResponse,
     UsuarioBase,
     UsuarioCreate,
     UsuarioLogin,
     UsuarioResponse,
     UsuarioUpdate,
+)
+from app.schemas.colaborador_schema import (
+    ColaboradorBase,
+    ColaboradorCreate,
+    ColaboradorResponse,
+    ColaboradorUpdate,
 )
 from app.schemas.proyecto_schema import (
     ProyectoBase,
@@ -45,7 +52,8 @@ from app.schemas.asistencia_schema import (
 )
 
 __all__ = [
-    "UsuarioBase", "UsuarioCreate", "UsuarioUpdate", "UsuarioResponse", "UsuarioLogin",
+    "UsuarioBase", "UsuarioCreate", "UsuarioUpdate", "UsuarioResponse", "UsuarioLogin", "TokenResponse",
+    "ColaboradorBase", "ColaboradorCreate", "ColaboradorUpdate", "ColaboradorResponse",
     "ProyectoBase", "ProyectoCreate", "ProyectoUpdate", "ProyectoResponse",
     "SubcontratistaBase", "SubcontratistaCreate", "SubcontratistaResponse", "SubcontratistaUpdate",
     "MaterialBase", "MaterialCreate", "MaterialUpdate", "MaterialResponse",
