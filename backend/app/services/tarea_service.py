@@ -2,21 +2,29 @@ from typing import Optional
 
 from sqlalchemy.orm import Session
 
+from app.core.soft_delete import marcar_eliminado, restaurar, sin_eliminados
 from app.models import Comentario, Tarea
 from app.schemas import ComentarioCreate, TareaCreate, TareaUpdate
 
 
 # --- Tareas ---
 
-def listar_tareas(db: Session, proyecto_id: Optional[int] = None, skip: int = 0, limit: int = 100):
+def listar_tareas(
+    db: Session, proyecto_id: Optional[int] = None, incluir_eliminados: bool = False, skip: int = 0, limit: int = 100
+):
     query = db.query(Tarea)
     if proyecto_id is not None:
         query = query.filter(Tarea.proyecto_id == proyecto_id)
+    if not incluir_eliminados:
+        query = sin_eliminados(query, Tarea)
     return query.offset(skip).limit(limit).all()
 
 
-def obtener_tarea(db: Session, tarea_id: int) -> Optional[Tarea]:
-    return db.query(Tarea).filter(Tarea.id == tarea_id).first()
+def obtener_tarea(db: Session, tarea_id: int, incluir_eliminados: bool = False) -> Optional[Tarea]:
+    query = db.query(Tarea).filter(Tarea.id == tarea_id)
+    if not incluir_eliminados:
+        query = sin_eliminados(query, Tarea)
+    return query.first()
 
 
 def crear_tarea(db: Session, tarea: TareaCreate) -> Tarea:
@@ -28,30 +36,45 @@ def crear_tarea(db: Session, tarea: TareaCreate) -> Tarea:
 
 
 def actualizar_tarea(db: Session, tarea_id: int, datos: TareaUpdate) -> Optional[Tarea]:
-    tarea_query = db.query(Tarea).filter(Tarea.id == tarea_id)
-    tarea = tarea_query.first()
+    tarea = obtener_tarea(db, tarea_id)
     if not tarea:
         return None
 
-    tarea_query.update(datos.model_dump(exclude_unset=True), synchronize_session=False)
+    for campo, valor in datos.model_dump(exclude_unset=True).items():
+        setattr(tarea, campo, valor)
+
     db.commit()
-    return tarea_query.first()
+    db.refresh(tarea)
+    return tarea
 
 
 def eliminar_tarea(db: Session, tarea_id: int) -> bool:
-    tarea_query = db.query(Tarea).filter(Tarea.id == tarea_id)
-    if not tarea_query.first():
+    """Soft delete: la tarea (y su historial de comentarios) sigue en la base,
+    solo deja de aparecer en los listados normales."""
+    tarea = obtener_tarea(db, tarea_id)
+    if not tarea:
         return False
 
-    tarea_query.delete(synchronize_session=False)
-    db.commit()
+    marcar_eliminado(db, tarea)
     return True
+
+
+def restaurar_tarea(db: Session, tarea_id: int) -> Optional[Tarea]:
+    tarea = obtener_tarea(db, tarea_id, incluir_eliminados=True)
+    if not tarea or tarea.fecha_eliminacion is None:
+        return None
+
+    restaurar(db, tarea)
+    return tarea
 
 
 # --- Comentarios (siempre asociados a una tarea) ---
 
-def listar_comentarios(db: Session, tarea_id: int):
-    return db.query(Comentario).filter(Comentario.tarea_id == tarea_id).order_by(Comentario.fecha_comentario).all()
+def listar_comentarios(db: Session, tarea_id: int, incluir_eliminados: bool = False):
+    query = db.query(Comentario).filter(Comentario.tarea_id == tarea_id)
+    if not incluir_eliminados:
+        query = sin_eliminados(query, Comentario)
+    return query.order_by(Comentario.fecha_comentario).all()
 
 
 def crear_comentario(db: Session, tarea_id: int, usuario_id: int, comentario: ComentarioCreate) -> Comentario:
@@ -67,10 +90,11 @@ def crear_comentario(db: Session, tarea_id: int, usuario_id: int, comentario: Co
 
 
 def eliminar_comentario(db: Session, comentario_id: int) -> bool:
-    comentario_query = db.query(Comentario).filter(Comentario.id == comentario_id)
-    if not comentario_query.first():
+    """Soft delete: útil para poder revisar después si un comentario borrado
+    contenía información relevante para una disputa o reclamo."""
+    comentario = db.query(Comentario).filter(Comentario.id == comentario_id).first()
+    if not comentario or comentario.fecha_eliminacion is not None:
         return False
 
-    comentario_query.delete(synchronize_session=False)
-    db.commit()
+    marcar_eliminado(db, comentario)
     return True

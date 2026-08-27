@@ -13,16 +13,17 @@ router = APIRouter(prefix="/tareas", tags=["Tareas"])
 @router.get("/", response_model=List[TareaResponse])
 def get_tareas(
     proyecto_id: Optional[int] = Query(None, description="Filtrar por proyecto"),
+    incluir_eliminados: bool = False,
     skip: int = 0,
     limit: int = 100,
     db: Session = Depends(get_db),
 ):
-    return tarea_service.listar_tareas(db, proyecto_id, skip, limit)
+    return tarea_service.listar_tareas(db, proyecto_id, incluir_eliminados, skip, limit)
 
 
 @router.get("/{tarea_id}", response_model=TareaResponse)
-def get_tarea(tarea_id: int, db: Session = Depends(get_db)):
-    tarea = tarea_service.obtener_tarea(db, tarea_id)
+def get_tarea(tarea_id: int, incluir_eliminados: bool = False, db: Session = Depends(get_db)):
+    tarea = tarea_service.obtener_tarea(db, tarea_id, incluir_eliminados)
     if not tarea:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Tarea no encontrada")
     return tarea
@@ -48,13 +49,21 @@ def delete_tarea(tarea_id: int, db: Session = Depends(get_db)):
     return None
 
 
+@router.post("/{tarea_id}/restaurar", response_model=TareaResponse)
+def restaurar_tarea(tarea_id: int, db: Session = Depends(get_db)):
+    tarea = tarea_service.restaurar_tarea(db, tarea_id)
+    if not tarea:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Tarea no encontrada o no está eliminada")
+    return tarea
+
+
 # --- Comentarios anidados bajo una tarea ---
 
 @router.get("/{tarea_id}/comentarios", response_model=List[ComentarioResponse])
-def get_comentarios(tarea_id: int, db: Session = Depends(get_db)):
+def get_comentarios(tarea_id: int, incluir_eliminados: bool = False, db: Session = Depends(get_db)):
     if not tarea_service.obtener_tarea(db, tarea_id):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Tarea no encontrada")
-    return tarea_service.listar_comentarios(db, tarea_id)
+    return tarea_service.listar_comentarios(db, tarea_id, incluir_eliminados)
 
 
 @router.post(

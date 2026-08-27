@@ -13,16 +13,17 @@ router = APIRouter(prefix="/turnos", tags=["Turnos y Asistencia"])
 @router.get("/", response_model=List[TurnoResponse])
 def get_turnos(
     proyecto_id: Optional[int] = Query(None, description="Filtrar por proyecto"),
+    incluir_eliminados: bool = False,
     skip: int = 0,
     limit: int = 100,
     db: Session = Depends(get_db),
 ):
-    return asistencia_service.listar_turnos(db, proyecto_id, skip, limit)
+    return asistencia_service.listar_turnos(db, proyecto_id, incluir_eliminados, skip, limit)
 
 
 @router.get("/{turno_id}", response_model=TurnoResponse)
-def get_turno(turno_id: int, db: Session = Depends(get_db)):
-    turno = asistencia_service.obtener_turno(db, turno_id)
+def get_turno(turno_id: int, incluir_eliminados: bool = False, db: Session = Depends(get_db)):
+    turno = asistencia_service.obtener_turno(db, turno_id, incluir_eliminados)
     if not turno:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Turno no encontrado")
     return turno
@@ -46,3 +47,11 @@ def delete_turno(turno_id: int, db: Session = Depends(get_db)):
     if not asistencia_service.eliminar_turno(db, turno_id):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Turno no encontrado")
     return None
+
+
+@router.post("/{turno_id}/restaurar", response_model=TurnoResponse)
+def restaurar_turno(turno_id: int, db: Session = Depends(get_db)):
+    turno = asistencia_service.restaurar_turno(db, turno_id)
+    if not turno:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Turno no encontrado o no está eliminado")
+    return turno

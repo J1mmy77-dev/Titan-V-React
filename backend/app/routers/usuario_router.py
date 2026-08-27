@@ -45,3 +45,13 @@ def delete_usuario(usuario_id: int, db: Session = Depends(get_db)):
     if not usuario_service.eliminar_usuario(db, usuario_id):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuario no encontrado")
     return None
+
+
+@router.post("/{usuario_id}/restaurar", response_model=UsuarioResponse)
+def restaurar_usuario(usuario_id: int, db: Session = Depends(get_db)):
+    usuario = usuario_service.restaurar_usuario(db, usuario_id)
+    if not usuario:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Usuario no encontrado o ya está activo"
+        )
+    return usuario
