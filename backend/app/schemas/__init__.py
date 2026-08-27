@@ -20,6 +20,11 @@ from app.schemas.proyecto_schema import (
     SubcontratistaResponse,
     SubcontratistaUpdate,
 )
+from app.schemas.colaborador_schema import (
+    ColaboradorInvitar,
+    ColaboradorResponse,
+    ColaboradorUpdate,
+)
 from app.schemas.material_schema import (
     InventarioResponse,
     KardexResponse,
@@ -48,6 +53,7 @@ __all__ = [
     "UsuarioBase", "UsuarioCreate", "UsuarioUpdate", "UsuarioResponse", "UsuarioLogin",
     "ProyectoBase", "ProyectoCreate", "ProyectoUpdate", "ProyectoResponse",
     "SubcontratistaBase", "SubcontratistaCreate", "SubcontratistaResponse", "SubcontratistaUpdate",
+    "ColaboradorInvitar", "ColaboradorResponse", "ColaboradorUpdate",
     "MaterialBase", "MaterialCreate", "MaterialUpdate", "MaterialResponse",
     "RegistroMovimiento", "KardexResponse", "InventarioResponse",
     "ComentarioCreate", "ComentarioResponse",

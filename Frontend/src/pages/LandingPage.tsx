@@ -1,5 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import QuienesSomos from '../components/QuienesSomos';
+// IMPORTACIÓN CON EL NOMBRE DE TU VIDEO
+import videoFondo from '../assets/video_landing.mp4'; 
 
 const caracteristicas = [
   {
@@ -36,6 +38,8 @@ const LandingPage = () => {
           alignItems: 'center',
           padding: '20px 8%',
           borderBottom: '2px solid #ffd60a',
+          position: 'relative',
+          zIndex: 10,
         }}
       >
         <div style={{ fontSize: '22px', fontWeight: 800 }}>
@@ -57,49 +61,96 @@ const LandingPage = () => {
         </button>
       </header>
 
-      <section
-        style={{
-          padding: '90px 8% 70px',
-          textAlign: 'center',
-          maxWidth: '780px',
-          margin: '0 auto',
-        }}
-      >
-        <span
+      {/* Contenedor principal con el video de fondo */}
+      <div style={{ position: 'relative', overflow: 'hidden', backgroundColor: '#000' }}>
+        
+        {/* ========================================================= */}
+        {/* VIDEO DE FONDO VINCULADO CORRECTAMENTE                    */}
+        {/* ========================================================= */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
           style={{
-            display: 'inline-block',
-            fontSize: '12px',
-            letterSpacing: '1px',
-            textTransform: 'uppercase',
-            color: '#ffd60a',
-            marginBottom: '18px',
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            width: '100%',
+            height: '100%',
+            minWidth: '100%',
+            minHeight: '100%',
+            objectFit: 'cover',
+            transform: 'translate(-50%, -50%)',
+            zIndex: 1,
           }}
         >
-          Sistema de gestión de obra
-        </span>
-        <h1 style={{ fontSize: '42px', lineHeight: 1.2, margin: '0 0 20px' }}>
-          Controla tu obra de principio a fin, <span style={{ color: '#ffd60a' }}>sin perder el hilo</span>
-        </h1>
-        <p style={{ color: '#bbb', fontSize: '17px', lineHeight: 1.6, marginBottom: '34px' }}>
-          Titan V centraliza los proyectos, el inventario de materiales y el equipo de tu constructora
-          en un solo sistema, pensado para obras pequeñas y medianas.
-        </p>
-        <button
-          onClick={() => navigate('/login')}
+          <source src={videoFondo} type="video/mp4" />
+          Tu navegador no soporta videos de fondo.
+        </video>
+
+        {/* Capa de protección oscura para aumentar el contraste de las letras */}
+        <div
           style={{
-            backgroundColor: '#ffd60a',
-            color: '#000',
-            border: 'none',
-            borderRadius: '999px',
-            padding: '15px 34px',
-            fontWeight: 700,
-            fontSize: '15px',
-            cursor: 'pointer',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0, 0, 0, 0.6)', 
+            zIndex: 2,
+          }}
+        />
+        {/* ========================================================= */}
+
+        {/* Bloque de textos flotando por encima del fondo */}
+        <section
+          style={{
+            position: 'relative',
+            zIndex: 3,
+            padding: '120px 8% 100px',
+            textAlign: 'center',
+            maxWidth: '780px',
+            margin: '0 auto',
           }}
         >
-          Entrar al panel <i className="fas fa-arrow-right"></i>
-        </button>
-      </section>
+          <span
+            style={{
+              display: 'inline-block',
+              fontSize: '12px',
+              letterSpacing: '1px',
+              textTransform: 'uppercase',
+              color: '#ffd60a',
+              marginBottom: '18px',
+              fontWeight: 600,
+            }}
+          >
+            Sistema de gestión de obra
+          </span>
+          <h1 style={{ fontSize: '42px', lineHeight: 1.2, margin: '0 0 20px', fontWeight: 800 }}>
+            Controla tu obra de principio a fin, <span style={{ color: '#ffd60a' }}>sin perder el hilo</span>
+          </h1>
+          <p style={{ color: '#ccc', fontSize: '17px', lineHeight: 1.6, marginBottom: '34px' }}>
+            Titan V centraliza los proyectos, el inventario de materiales y el equipo de tu constructora
+            en un solo sistema, pensado para obras pequeñas y medianas.
+          </p>
+          <button
+            onClick={() => navigate('/login')}
+            style={{
+              backgroundColor: '#ffd60a',
+              color: '#000',
+              border: 'none',
+              borderRadius: '999px',
+              padding: '15px 34px',
+              fontWeight: 700,
+              fontSize: '15px',
+              cursor: 'pointer',
+            }}
+          >
+            Entrar al panel <i className="fas fa-arrow-right"></i>
+          </button>
+        </section>
+      </div>
 
       <section style={{ backgroundColor: '#f8f9fa', color: '#111', padding: '70px 8%' }}>
         <h2

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { CardAccion } from './CardAccion';
 import Registro from './Registro';
+// IMPORTACIÓN CORRECTA DEL VIDEO DESDE TU CARPETA ASSETS
+import videoLogin from '../assets/video_login.mp4'; 
 
 export interface LoginProps {
   correo: string;
@@ -56,17 +58,60 @@ export const Login: React.FC<LoginProps> = ({
       justifyContent: 'center',
       alignItems: 'center',
       minHeight: '100vh',
-      backgroundColor: '#121212'
+      backgroundColor: '#121212',
+      position: 'relative', // Obligatorio para contener el video absoluto
+      overflow: 'hidden'    // Evita barras de scroll por el tamaño del video
     }}>
 
+      {/* ========================================================= */}
+      {/* VIDEO DE FONDO PARA EL LOGIN                              */}
+      {/* ========================================================= */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          width: '100%',
+          height: '100%',
+          minWidth: '100%',
+          minHeight: '100%',
+          objectFit: 'cover',
+          transform: 'translate(-50%, -50%)',
+          zIndex: 1
+        }}
+      >
+        <source src={videoLogin} type="video/mp4" />
+        Tu navegador no soporta videos de fondo.
+      </video>
+
+      {/* Filtro oscuro intermedio para opacar el video y facilitar la lectura */}
       <div style={{
-        backgroundColor: '#1e1e1e',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'rgba(0, 0, 0, 0.65)', // Ajusta el nivel de oscuridad aquí (0.0 a 1.0)
+        zIndex: 2
+      }} />
+      {/* ========================================================= */}
+
+      {/* TARJETA DEL FORMULARIO DE INICIO DE SESIÓN */}
+      <div style={{
+        backgroundColor: 'rgba(30, 30, 30, 0.85)', // Se le dio transparencia al fondo de la tarjeta
+        backdropFilter: 'blur(10px)', // Efecto esmerilado/blur moderno sobre el video de fondo
         padding: '30px',
         borderRadius: '12px',
-        boxShadow: '0 8px 24px rgba(0,0,0,0.5), 0 0 15px rgba(255, 204, 0, 0.2)',
+        boxShadow: '0 8px 24px rgba(0,0,0,0.6), 0 0 15px rgba(255, 204, 0, 0.15)',
         width: '350px',
         textAlign: 'center',
-        border: '1px solid #333'
+        border: '1px solid #333',
+        position: 'relative', // Obligatorio junto con zIndex
+        zIndex: 3 // Ubica el formulario al frente por encima del video (1) y la capa oscura (2)
       }}>
 
         <h2 style={{
