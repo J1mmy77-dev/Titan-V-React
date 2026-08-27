@@ -10,6 +10,7 @@ from app import models  # noqa: F401
 from app.routers.auth_router import router as auth_router
 from app.routers.usuario_router import router as usuario_router
 from app.routers.proyecto_router import router as proyecto_router
+from app.routers.colaborador_router import router as colaborador_router
 from app.routers.material_router import router as material_router
 from app.routers.tarea_router import router as tarea_router
 from app.routers.turno_router import router as turno_router
@@ -34,6 +35,7 @@ app.add_middleware(
 app.include_router(auth_router)
 app.include_router(usuario_router)
 app.include_router(proyecto_router)
+app.include_router(colaborador_router)
 app.include_router(material_router)
 app.include_router(tarea_router)
 app.include_router(turno_router)
