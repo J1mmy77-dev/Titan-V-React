@@ -1,8 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-// Coordenadas por defecto (Bogotá). Más adelante se puede volver dinámico
-// por proyecto/obra, usando la ubicación guardada de cada proyecto.
+
 const LATITUD_DEFECTO = 4.7110;
 const LONGITUD_DEFECTO = -74.0721;
 
@@ -27,17 +26,22 @@ const initialState: ClimaState = {
   ultimaActualizacion: null,
 };
 
-// Thunk: trae el clima actual desde la API pública de Open-Meteo (no requiere API key)
+
 export const fetchClima = createAsyncThunk(
   'clima/fetchClima',
-  async (
-    coords: { lat: number; lon: number } = { lat: LATITUD_DEFECTO, lon: LONGITUD_DEFECTO }
-  ) => {
+  async (coords?: { lat: number; lon: number }) => {
+    
+    const ubicacion = coords ?? {
+      lat: LATITUD_DEFECTO,
+      lon: LONGITUD_DEFECTO,
+    };
+
     const url = 'https://api.open-meteo.com/v1/forecast';
+
     const respuesta = await axios.get(url, {
       params: {
-        latitude: coords.lat,
-        longitude: coords.lon,
+        latitude: ubicacion.lat,
+        longitude: ubicacion.lon,
         current: 'temperature_2m,precipitation,weathercode',
         timezone: 'auto',
       },
@@ -66,14 +70,17 @@ const climaSlice = createSlice({
         state.cargando = true;
         state.error = null;
       })
+
       .addCase(fetchClima.fulfilled, (state, action) => {
         state.cargando = false;
         state.datos = action.payload;
         state.ultimaActualizacion = new Date().toISOString();
       })
+
       .addCase(fetchClima.rejected, (state, action) => {
         state.cargando = false;
-        state.error = action.error.message ?? 'No se pudo obtener el clima';
+        state.error =
+          action.error.message ?? 'No se pudo obtener el clima';
       });
   },
 });
