@@ -1,0 +1,70 @@
+"""
+Reexporta todos los esquemas de Pydantic para mantener compatibilidad con
+`from app.schemas import X` en cualquier parte de la app.
+"""
+
+from app.schemas.usuario_schema import (
+    TokenResponse,
+    UsuarioBase,
+    UsuarioCreate,
+    UsuarioLogin,
+    UsuarioResponse,
+    UsuarioUpdate,
+)
+from app.schemas.colaborador_schema import (
+    ColaboradorBase,
+    ColaboradorCreate,
+    ColaboradorResponse,
+    ColaboradorUpdate,
+)
+from app.schemas.proyecto_schema import (
+    ProyectoBase,
+    ProyectoCreate,
+    ProyectoResponse,
+    ProyectoUpdate,
+    SubcontratistaBase,
+    SubcontratistaCreate,
+    SubcontratistaResponse,
+    SubcontratistaUpdate,
+)
+from app.schemas.colaborador_schema import (
+    ColaboradorInvitar,
+    ColaboradorResponse,
+    ColaboradorUpdate,
+)
+from app.schemas.material_schema import (
+    InventarioResponse,
+    KardexResponse,
+    MaterialBase,
+    MaterialCreate,
+    MaterialResponse,
+    MaterialUpdate,
+    RegistroMovimiento,
+)
+from app.schemas.tarea_schema import (
+    ComentarioCreate,
+    ComentarioResponse,
+    TareaBase,
+    TareaCreate,
+    TareaResponse,
+    TareaUpdate,
+)
+from app.schemas.asistencia_schema import (
+    TurnoBase,
+    TurnoCreate,
+    TurnoResponse,
+    TurnoUpdate,
+)
+
+__all__ = [
+    "UsuarioBase", "UsuarioCreate", "UsuarioUpdate", "UsuarioResponse", "UsuarioLogin", "TokenResponse",
+    "ColaboradorBase", "ColaboradorCreate", "ColaboradorUpdate", "ColaboradorResponse",
+    "ProyectoBase", "ProyectoCreate", "ProyectoUpdate", "ProyectoResponse",
+    "SubcontratistaBase", "SubcontratistaCreate", "SubcontratistaResponse", "SubcontratistaUpdate",
+    "ColaboradorInvitar", "ColaboradorResponse", "ColaboradorUpdate",
+    "MaterialBase", "MaterialCreate", "MaterialUpdate", "MaterialResponse",
+    "RegistroMovimiento", "KardexResponse", "InventarioResponse",
+    "ComentarioCreate", "ComentarioResponse",
+    "TareaBase", "TareaCreate", "TareaUpdate", "TareaResponse",
+    "TurnoBase", "TurnoCreate", "TurnoUpdate", "TurnoResponse",
+]
