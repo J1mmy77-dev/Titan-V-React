@@ -30,36 +30,67 @@ const initialState: ClimaState = {
 export const fetchClima = createAsyncThunk(
   'clima/fetchClima',
   async (coords?: { lat: number; lon: number }) => {
-    
-    const ubicacion = coords ?? {
-      lat: LATITUD_DEFECTO,
-      lon: LONGITUD_DEFECTO,
-    };
+    try {
+      const ubicacion = coords ?? {
+        lat: LATITUD_DEFECTO,
+        lon: LONGITUD_DEFECTO,
+      };
 
-    const url = 'https://api.open-meteo.com/v1/forecast';
+      const url = 'https://api.open-meteo.com/v1/forecast';
 
-    const respuesta = await axios.get(url, {
-      params: {
-        latitude: ubicacion.lat,
-        longitude: ubicacion.lon,
-        current: 'temperature_2m,precipitation,weathercode',
-        timezone: 'auto',
-      },
-    });
+      const respuesta = await axios.get(url, {
+        params: {
+          latitude: ubicacion.lat,
+          longitude: ubicacion.lon,
+          current: 'temperature_2m,precipitation,weathercode',
+          timezone: 'auto',
+        },
+      });
 
-    const actual = respuesta.data.current;
+      
+      if (!respuesta.data || !respuesta.data.current) {
+        throw new Error(
+          'No hay información del clima disponible en este momento.'
+        );
+      }
 
-    const clima: ClimaActual = {
-      temperatura: actual.temperature_2m,
-      precipitacion: actual.precipitation,
-      codigoClima: actual.weathercode,
-      hora: actual.time,
-    };
+      const actual = respuesta.data.current;
 
-    return clima;
+      const clima: ClimaActual = {
+        temperatura: actual.temperature_2m,
+        precipitacion: actual.precipitation,
+        codigoClima: actual.weathercode,
+        hora: actual.time,
+      };
+
+      return clima;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (!error.response) {
+          throw new Error(
+            'No hay conexión a Internet o no se puede conectar con el servicio del clima.'
+          );
+        }
+
+        if (error.response.status >= 500) {
+          throw new Error(
+            'El servicio del clima no está disponible en este momento.'
+          );
+        }
+
+        throw new Error(
+          'No se pudo obtener la información del clima.'
+        );
+      }
+
+      if (error instanceof Error) {
+        throw error;
+      }
+
+      throw new Error('Ocurrió un error inesperado al consultar el clima.');
+    }
   }
 );
-
 const climaSlice = createSlice({
   name: 'clima',
   initialState,
